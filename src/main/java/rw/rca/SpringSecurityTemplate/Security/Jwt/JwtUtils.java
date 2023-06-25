@@ -19,29 +19,24 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    @Value("${ali.app.jwtSecret}")
+    @Value("${fizzet.app.jwtSecret}")
     private String jwtSecret;
-    @Value("${ali.app.jwtExpirationMs}")
+    @Value("${fizzet.app.jwtExpirationMs}")
     private int jwtExpirationMs;
-    @Value("${ali.app.jwtCookieName}")
-    private String jwtCookie;
 
     public String getJwtFromCookies(HttpServletRequest request){
-        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
-        if (cookie != null) {
-            return cookie.getValue();
+//        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+        String token = request.getHeader("Authorization");
+        if (token != null) {
+            return token.split(" ")[1];
         } else {
             return null;
         }
     }
 
-    public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        return ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
-    }
-
-    public ResponseCookie getCleanJwtCookie() {
-        return ResponseCookie.from(jwtCookie, null).path("/api").build();
+    public String generateJwtToken(UserDetailsImpl userPrincipal) {
+        String token = generateTokenFromUsername(userPrincipal.getUsername());
+        return token;
     }
 
     public String getUserNameFromJwtToken(String token) {

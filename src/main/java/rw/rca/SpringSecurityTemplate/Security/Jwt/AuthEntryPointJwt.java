@@ -10,7 +10,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
@@ -19,10 +18,6 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException {
-        Cookie cookies[] = request.getCookies();
-        for(Cookie cookie : cookies) {
-            System.out.println(cookie.getValue());
-        }
 
         logger.error("Unauthorized error: {}", authException.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
