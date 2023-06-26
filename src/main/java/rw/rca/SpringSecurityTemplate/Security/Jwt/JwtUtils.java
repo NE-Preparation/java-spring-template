@@ -24,8 +24,7 @@ public class JwtUtils {
     @Value("${fizzet.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String getJwtFromCookies(HttpServletRequest request){
-//        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+    public String getJwtFromHeaders(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         if (token != null) {
             return token.split(" ")[1];
